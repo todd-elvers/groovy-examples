@@ -1,0 +1,20 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:2.2.1'
+    compile 'org.codehaus.groovy:groovy-test:2.2.1'
+
+    runtime "commons-cli:commons-cli:1.2"
+}
+
+configurations.all {
+    resolutionStrategy {
+        failOnVersionConflict()
+        cacheChangingModulesFor(0, 'seconds')
+    }
+}
