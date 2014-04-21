@@ -22,7 +22,6 @@ class MessageFeature {
 }
     
     
-    
 // The following is considered "non-intrusive" since it does not
 // require that we change the code of the class 
 // receiving the new features
