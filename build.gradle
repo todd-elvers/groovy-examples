@@ -12,6 +12,7 @@ dependencies {
     runtime "commons-cli:commons-cli:1.2"
 }
 
+
 configurations.all {
     resolutionStrategy {
         failOnVersionConflict()
