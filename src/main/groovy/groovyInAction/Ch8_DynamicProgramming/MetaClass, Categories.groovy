@@ -1,4 +1,5 @@
 package groovyInAction.Ch8_DynamicProgramming
+import groovy.time.TimeCategory
 /**************************************/
 /*** Some Capabilities of MetaClass ***/
 /**************************************/
@@ -95,17 +96,53 @@ assert new MySubGroovy().added()
 // classes share that behavior is the same as above, but requires calling:
 // ExpandoMetaClass.enableGlobally()
 
- 
-// all implementing classes share that behavior:
-// Do the same as above, but call ExpandoMetaClass.enableGlobally()
+
+/**********************************************************/
+/*** MetaClass injection of operator & MOP hook methods ***/
+/**********************************************************/
+
+String.metaClass {
+    rightShiftUnsigned = { prefix ->
+        delegate.replaceAll(~/\w+/) { prefix + it }
+    }
+    methodMissing = { String name, args ->
+        delegate.replaceAll(name, args[0])
+    }
+}
+String people = "Dierk,Guillaume,Paul,Hamlet,Jon"
+people >>>= "\n    "
+people    = people.Dierk('Mittie').Guillaume('Mr.G')
+
+assert people == '''
+    Mittie,
+    Mr.G,
+    Paul,
+    Hamlet,
+    Jon'''
+
+/*
+
+   MetaClass takeaways:
+
+      - All method calls from Groovy code go through the meta class
+      - Meta classes can change - for all instances of a class or per single instance
+      - Meta classes changes affect all future instances in all running threads
+      - Meta classes allow non-intrusive changes in both Groovy and Java code as long
+        as the caller is Groovy. We can even change access to final classes like java.lang.String
+      - Meta class changes can well take the form of property accessors (pretending property access),
+        operator methods, GroovyObject methods, or MOP hook methods
+      - ExpandoMetaClass makes meta class modifications more convenient
+      - Meta class changes are best applied only once - preferably at application startup time
+
+
+ * */
+
 
 
 
 /********************/
 /*** TimeCategory ***/
 /********************/
-import groovy.time.TimeCategory
-
 def date
 use(TimeCategory) {
     date = 2.weeks.from.today
@@ -113,15 +150,26 @@ use(TimeCategory) {
 println("2 weeks from today: ${date}")
 
 /*
-    Key characteristics of using category classes:
-    
-    - Category usage is confined to the current thread
-    - Category use is non-intrusive
-    - If the receiver type refers to a superclass or even an interface, then the method
-      will be available in all subclasses/implementors
-    - Category methods names can take the form of property accessors (pretending
-      property access), operator methods, and GroovyObject methods
-    - In places where performance is crucial, use categories with care
-    - Categories cannot introduce new state in the receiver object
+
+    Category class takeaways:
+
+      - Classes not written in Groovy (e.g. Collections) can still be used as categories
+
+      - Category usage is confined to the current thread
+
+      - Category use is non-intrusive
+
+      - If the receiver type refers to a superclass or even an interface, then the method
+        will be available in all subclasses/implementors
+
+      - Category methods names can take the form of property accessors (pretending
+        property access), operator methods, and GroovyObject methods
+
+      - In places where performance is crucial, use categories with care
+
+      - Categories cannot introduce new state in the receiver object
+
+      - If two or more Categories conflict on a method name, the latest Category wins
+
 
 */
