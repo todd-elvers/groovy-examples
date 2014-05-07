@@ -6,7 +6,7 @@ class Money {
 
     // Overrides the '.equals()' and '==' operators    
     boolean equals (Object other) {
-        if (null == other)              return false
+        if (!other)                     return false
         if (! (other instanceof Money)) return false
         if (currency != other.currency) return false
         if (amount   != other.amount)   return false
@@ -15,7 +15,7 @@ class Money {
    
     // Overrides the '.plus()' and '+' operators
     Money plus (Money other) {
-        if (null == other) return null
+        if (!other) return null
         if (other.currency != currency) {
             throw new IllegalArgumentException("cannot add $other.currency to $currency")
         }
@@ -28,7 +28,8 @@ class Money {
     }
 }
     
-def buck = new Money(amount: 1, currency: 'USD') 
+def buck = new Money(amount: 1, currency: 'USD')
+
 assert buck 
 assert buck.equals(new Money(amount:1, currency: 'USD'))
 assert buck             == new Money(amount: 1, currency: 'USD')   
