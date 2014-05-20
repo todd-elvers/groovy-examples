@@ -62,7 +62,7 @@ matcher = (testString =~ /.*+foo/)
 printMatcherResults(matcher)
 
 
-// Example of difference between GREEDY and POSSESSIVE:
+// LocalASTTransformationExample of difference between GREEDY and POSSESSIVE:
 //    For string (quotes are part of string) "abc and regex "[^"]*"
 //    POSSESSIVE would... 
 //        1 - Match first " of the regex to first " of the string
