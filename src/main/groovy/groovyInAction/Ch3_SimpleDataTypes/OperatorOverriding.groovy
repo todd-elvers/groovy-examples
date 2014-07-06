@@ -7,7 +7,7 @@ class Money {
     // Overrides the '.equals()' and '==' operators    
     boolean equals (Object other) {
         if (!other)                     return false
-        if (! (other instanceof Money)) return false
+        if (! other instanceof Money)   return false
         if (currency != other.currency) return false
         if (amount   != other.amount)   return false
         return true

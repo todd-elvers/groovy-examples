@@ -1,4 +1,5 @@
 package groovyInAction.Ch4_CollectionDatatypes
+
 /******************************/
 /***** MAP INITIALIZATION *****/
 /******************************/
@@ -49,6 +50,8 @@ map.each { entry ->
     assert entry.key instanceof String
     assert entry.value instanceof Integer
 }
+
+
 
 /************************/
 /***** MAP MUTATING *****/

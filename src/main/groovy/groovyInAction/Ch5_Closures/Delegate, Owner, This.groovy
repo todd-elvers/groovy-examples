@@ -1,17 +1,4 @@
 package groovyInAction.Ch5_Closures
-/*********************/
-/*** Closure Scope ***/
-/*********************/
-
-// Birthday context 
-// A reference to varible x is passed to the closure, not a copy of variable x
-def x = 0
-10.times {
-    x++
-}
-assert x == 10
-
-
 
 /***************************************/
 /*** Closures: this, delegate, owner ***/
