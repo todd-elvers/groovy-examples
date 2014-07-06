@@ -6,12 +6,11 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy:2.2.1'
-    compile 'org.codehaus.groovy:groovy-test:2.2.1'
+    compile 'org.codehaus.groovy:groovy:2.3.3'
+    compile 'org.codehaus.groovy:groovy-test:2.3.3'
 
     runtime "commons-cli:commons-cli:1.2"
 }
-
 
 configurations.all {
     resolutionStrategy {
