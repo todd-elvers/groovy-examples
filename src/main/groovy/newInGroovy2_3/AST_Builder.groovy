@@ -1,7 +1,27 @@
 package newInGroovy2_3
 
+
+
+
+// All of the following examples work, but Intellij 13.1.3 misreads @Builder and thinks all the listed
+// attributes MUST be specified and highlights it red (Severity: Error) otherwise.  Not only is this a
+// nuisance but some of the ways to configure @Builder don't allow you to set all attributes.
+// Essentially you cannot please the IDE, but the code executes flawlessly.
+//
+// This will likely be resolved soon, at which time I'll uncomment the following.
+
+
+
+
+
+
+
+
+
+
+
 /*
-    The @Builder AST Transformation simplifies creating objects that contain setters that return
+    The @Builder AST transformation simplifies creating objects that contain setters that return
     instances of themselves to allow for chaining commands.
 
     These are known as 'fluent interfaces' and are typically used in the Java Builder pattern like:
@@ -14,12 +34,6 @@ package newInGroovy2_3
     present in Groovy v2.3.3.
 */
 
-
-
-
-// All of the following examples work, but since Intellij 13.1.3 thinks there are missing attributes on
-// the annotation the IDE highlights all usage of @Builder as a erroneous unless all attributes are
-// specified.  This will likely be resolved soon, at which time I'll uncomment the following.
 
 
 ///*
