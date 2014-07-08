@@ -7,12 +7,14 @@ class Greeter {
         println "Hello from the greet() method!"
     }
 
-    /*
-       What will be created after the AST transformation is applied:
 
-       public static void main(String[] args){
-           new Greeter().greet()
-       }
+
+    /*
+        Given the above annotation, MainMethodTransformation will inject the following code into this class:
+
+            public static void main(String[] args){
+               new Greeter().greet()
+            }
 
     */
 }
