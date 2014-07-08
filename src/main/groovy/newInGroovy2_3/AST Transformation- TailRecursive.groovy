@@ -14,8 +14,6 @@ static final FIB_NUMBER_TO_CALCULATE = 36
 println("Using Fibnocci number: $FIB_NUMBER_TO_CALCULATE")
 
 /*
-    Worst answer:
-
     Normal recursive way to calculate a fibonacci number
         Pros:
             - Simple to read and understand
@@ -41,8 +39,7 @@ println "fib${'\t' * 8}|\t${System.currentTimeMillis() - fibCalcStartTime}\t\t|\
 
 
 /*
-    Better answer:  (Introduced in Groovy 1.8)
-
+    (Introduced in Groovy 1.8)
     Tail-recursive way to calculate a fibonacci number.
         Pros:
             - Great runtime (although some fib numbers will be calculated twice)
@@ -69,8 +66,7 @@ println "fibWithTrampoline${'\t' * 4}|\t${System.currentTimeMillis() - fibCalcSt
 
 
 /*
-    Even better answer:  (Introduced in Groovy 2.3)
-
+    (Introduced in Groovy 2.3)
     Tail-recursive way to calculate a fibonacci number.
         Pros:
             - Great runtime (although some fib numbers will be calculated twice)
@@ -104,8 +100,7 @@ println "fibClosureWithTailRecursion${'\t' * 2}|\t${System.currentTimeMillis() -
 
 
 /*
-    Best answer: (Features from Groovy 2.2 & 2.3)
-
+    (Features from Groovy 2.2 & 2.3)
     Tail-recursive way to calculate a fibonacci number.
         Pros:
             - Best runtime since memoization caches values and prevents duplicate calculations
@@ -139,12 +134,7 @@ println "fibMethodWithTailRecAndMemoize${'\t' * 1}|\t${System.currentTimeMillis(
 
 @TailRecursive
 def calculateFactorial(BigInteger n, accumulator = 1G) {
-    if (n < 2) {
-        accumulator
-    }
-    else {
-        calculateFactorial(n - 1, n * accumulator)
-    }
+    (n < 2) ? accumulator : calculateFactorial(n - 1, n * accumulator)
 }
 
 def factorialExample = calculateFactorial(1000)
