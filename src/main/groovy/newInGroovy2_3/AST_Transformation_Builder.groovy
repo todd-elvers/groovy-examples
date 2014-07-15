@@ -14,8 +14,8 @@ import groovy.transform.builder.SimpleStrategy
     The Java Builder pattern is seen a lot when dealing with immutable objects. Say you want to build an instance
     of your immutable Person class using the above pattern.  Often times you'd see something to the effect of:
 
-                Person person = new Person.PersonBuilder().withFirstName('...')
-                                                          .withLastName('...')
+                Person person = new Person.PersonBuilder().withFirstName("...")
+                                                          .withLastName("...")
                                                           .build()
 
     How it's done:
