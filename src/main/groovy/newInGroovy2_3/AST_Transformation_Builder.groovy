@@ -1,17 +1,58 @@
 package newInGroovy2_3
 
 import groovy.transform.builder.Builder
+import groovy.transform.builder.ExternalStrategy
 import groovy.transform.builder.InitializerStrategy
+import groovy.transform.builder.SimpleStrategy
+
+
 
 
 /*
-    The @Builder AST transformation simplifies creating objects that contain setters that return
-    instances of themselves to allow for chaining commands.
+    The @Builder AST transformation simplifies building object following the Java Builder pattern.
 
-    These are known as 'fluent interfaces' and are typically used in the Java Builder pattern like:
-        Person p = new Person.PersonBuilder().withFirstName('John')
-                                             .withLastName('Smith')
-                                             .build()
+    The Java Builder pattern is seen a lot when dealing with immutable objects. Say you want to build an instance
+    of your immutable Person class using the above pattern.  Often times you'll see something to the effect of:
+
+                Person person = new Person.PersonBuilder().withFirstName('...')
+                                                          .withLastName('...')
+                                                          .build()
+
+    How it's done:
+        - Person has only one constructor, which is private, that takes an instance of PersonBuilder
+        - PersonBuilder is an public static class that resides in the Person class
+        - PersonBuilder has setter methods that return an instance of 'this' (ie the instance of PersonBuilder)
+          in order to allow for method chaining (http://en.wikipedia.org/wiki/Method_chaining)
+        - PersonBuilder has a build method (usually called 'build') that returns an instance of Person by calling
+          Person's private constructor with the instance of PersonBuilder we just got done chaining methods on,
+          returning an instance of Person with the values we set on PersonBuilder
+
+
+
+    One implementation of the Java Builder pattern called 'fluent interfaces' (http://en.wikipedia.org/wiki/Fluent_interface)
+    involves method chaining on a class to set values, but then ending the chain of method calls with a void method.
+    Here is an example of a fluent interface in Java:
+
+                new Email().to("...")
+                           .from("...")
+                           .withSubject("...")
+                           .withBody("...")
+                           .send();
+
+
+
+    Groovy has its own way to allow for fluent interfaces which is just as easy to read and doesn't require that the
+    setters in your class return an instance of 'this'.  In the following example, all the methods modify the state
+    of the same Email object like above, but all the methods called are void instead of just the last one.
+
+                new Email().with {
+                    to("...")
+                    from("...")
+                    withSubject("...")
+                    withBody("...")
+                    send()
+                }
+
 
     Since there are different ways to implement the Java Builder pattern, there are different strategies
     to implement the @Builder AST transformation.  Below are examples of the four different strategies
@@ -24,14 +65,12 @@ import groovy.transform.builder.InitializerStrategy
 
 
 
+
+
 // All of the following examples work, but Intellij 13.1.3 reads @Builder and thinks all the listed
 // attributes MUST be specified and highlights it red (Severity: Error) otherwise.  Not only is this a
 // nuisance but some of the ways to configure @Builder don't allow you to set all attributes.
-// Essentially you cannot please the IDE, but the code executes flawlessly.
-//
-// This will likely be resolved soon, at which time I'll uncomment the following.
-
-
+// Essentially the IDE will complain to you, but the code works fine.
 
 
 
@@ -77,8 +116,12 @@ assert "$p2.first $p2.last" == 'Johnny Depp'
 /*
     ExternalStrategy
 
-    With this strategy, you create a builder and annotate it to indicate what object it builds
-*/
+    With this strategy, you create a builder and annotate it to indicate what object it builds.
+
+    That builder has all necessary chain-able methods injected into it at compile time.  These methods return
+    instances of the enclosing class
+
+    */
 class Person3{
     String first
     String last
