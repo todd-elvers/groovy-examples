@@ -38,6 +38,8 @@ println "fib${'\t' * 8}|\t${System.currentTimeMillis() - fibCalcStartTime}\t\t|\
 
 
 
+
+
 /*
     (Introduced in Groovy 1.8)
     Tail-recursive way to calculate a fibonacci number.
@@ -62,6 +64,8 @@ fibWithTrampoline = { number, a = 0, b = 1 ->
 fibCalcStartTime = System.currentTimeMillis()
 fibCalcResult = fibWithTrampoline(FIB_NUMBER_TO_CALCULATE)
 println "fibWithTrampoline${'\t' * 4}|\t${System.currentTimeMillis() - fibCalcStartTime}\t\t\t|\t${fibCalcResult}\t"
+
+
 
 
 
@@ -99,6 +103,8 @@ println "fibClosureWithTailRecursion${'\t' * 2}|\t${System.currentTimeMillis() -
 
 
 
+
+
 /*
     (Features from Groovy 2.2 & 2.3)
     Tail-recursive way to calculate a fibonacci number.
@@ -124,6 +130,8 @@ def fibMethodWithTailRecAndMemoize(int number, a = 0, b = 1) {
 fibCalcStartTime = System.currentTimeMillis()
 fibCalcResult = fibMethodWithTailRecAndMemoize(FIB_NUMBER_TO_CALCULATE)
 println "fibMethodWithTailRecAndMemoize${'\t' * 1}|\t${System.currentTimeMillis() - fibCalcStartTime}\t\t\t|\t${fibCalcResult}\t\n"
+
+
 
 
 
