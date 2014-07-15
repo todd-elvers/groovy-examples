@@ -1,21 +1,33 @@
 package groovyInAction.Ch3_SimpleDataTypes
+
+
 /*************************/
 /** ARITHMETIC COERCION **/
 /*************************/
+
+
+/*
+    NOTE: For clarity, in the following when I say 'more precise type' I mean the type that requires
+          more bits to represent in the JVM.
+*/
+
+
 
 // ADDITION
 // SUBTRACTION
 // MULTIPLICATION 
 // These operations always return an instance of the more precise type
-// (e.g. BigDecimal + Integer = BigDecimal)
-// (Exception: Float +|-|* anyType = Double)
+// (e.g. BigDecimal + Integer = BigDecimal,
+//       BigInteger + Integer = BigInteger,
+//       BigDecimal + Double = BigDecimal)
+// (Exception: Float addition, subtraction & multiplication always return a Double)
 
 
 // DIVISION
 // If any of the arguments are of type Float or Double, the result is of type Double
 // Otherwise
 //    the result is of type BigDecimal
-//    with the maximum percision of both arguments, with half rounded up
+//    with the maximum precision of both arguments, with half rounded up
 //    and normalized (no trailing zeros)
 def x = 26
 def y = 10
