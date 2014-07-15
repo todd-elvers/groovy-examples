@@ -78,8 +78,8 @@ println "fibWithTrampoline${'\t' * 4}|\t${System.currentTimeMillis() - fibCalcSt
             - Faster than previous two examples
             - Works on methods
         Cons:
-            - No direct closure support, but converting a method already annotated
-              with @TailRecursive to a closure still works
+            - No direct closure support (although converting a method already annotated
+              with @TailRecursive to a closure still works)
             - Requires writing the function in a tail-recursive manner
 
 */
@@ -112,8 +112,8 @@ println "fibClosureWithTailRecursion${'\t' * 2}|\t${System.currentTimeMillis() -
             - Best runtime since memoization caches values and prevents duplicate calculations
             - Great usage of memory due
         Cons:
-            - No direct closure support, but converting a method already annotated
-              with @TailRecursive & @Memoized to a closure still works
+            - No direct closure support (although converting a method already annotated
+              with @TailRecursive & @Memoized to a closure still works)
             - Requires rewriting of the function
 
 */
