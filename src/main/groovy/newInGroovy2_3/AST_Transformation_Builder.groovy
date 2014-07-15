@@ -113,6 +113,7 @@ assert "$p2.first $p2.last" == 'Johnny Depp'
 
 
 
+
 /*
     ExternalStrategy
 
@@ -136,6 +137,7 @@ def p3 = new PersonBuilder().first('Johnny')
                             .born(1963)
                             .build()
 assert "$p3.first $p3.last" == 'Johnny Depp'
+
 
 
 
@@ -175,6 +177,7 @@ def p5 = Person5.maker()
                 .withYearOfBirth(1963)
                 .make()
 assert "$p5.firstName $p5.lastName" ==  'Johnny Depp'
+
 
 
 
