@@ -110,7 +110,7 @@ println "fibClosureWithTailRecursion${'\t' * 2}|\t${System.currentTimeMillis() -
     Tail-recursive way to calculate a fibonacci number.
         Pros:
             - Best runtime since memoization caches values and prevents duplicate calculations
-            - Great usage of memory due
+            - Great usage of memory due to stack not growing during recursion
         Cons:
             - No direct closure support (although converting a method already annotated
               with @TailRecursive & @Memoized to a closure still works)
