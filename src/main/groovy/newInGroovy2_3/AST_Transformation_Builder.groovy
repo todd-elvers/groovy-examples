@@ -9,10 +9,10 @@ import groovy.transform.builder.SimpleStrategy
 
 
 /*
-    The @Builder AST transformation simplifies building object following the Java Builder pattern.
+    The @Builder AST transformation simplifies building objects following the Java Builder pattern.
 
     The Java Builder pattern is seen a lot when dealing with immutable objects. Say you want to build an instance
-    of your immutable Person class using the above pattern.  Often times you'll see something to the effect of:
+    of your immutable Person class using the above pattern.  Often times you'd see something to the effect of:
 
                 Person person = new Person.PersonBuilder().withFirstName('...')
                                                           .withLastName('...')
@@ -29,8 +29,8 @@ import groovy.transform.builder.SimpleStrategy
 
 
 
-    One implementation of the Java Builder pattern called 'fluent interfaces' (http://en.wikipedia.org/wiki/Fluent_interface)
-    involves method chaining on a class to set values, but then ending the chain of method calls with a void method.
+    One implementation called 'fluent interfaces' (http://en.wikipedia.org/wiki/Fluent_interface) involves method
+    chaining on a class to set values, but then ending the chain of method calls with a void method.
     Here is an example of a fluent interface in Java:
 
                 new Email().to("...")
@@ -43,7 +43,7 @@ import groovy.transform.builder.SimpleStrategy
 
     Groovy has its own way to allow for fluent interfaces which is just as easy to read and doesn't require that the
     setters in your class return an instance of 'this'.  In the following example, all the methods modify the state
-    of the same Email object like above, but all the methods called are void instead of just the last one.
+    of the same Email object like above, but all the methods called are void instead of just the last one:
 
                 new Email().with {
                     to("...")
