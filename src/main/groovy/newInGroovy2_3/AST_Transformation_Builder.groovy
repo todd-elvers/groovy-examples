@@ -5,9 +5,6 @@ import groovy.transform.builder.ExternalStrategy
 import groovy.transform.builder.InitializerStrategy
 import groovy.transform.builder.SimpleStrategy
 
-
-
-
 /*
     The @Builder AST transformation simplifies building objects following the Java Builder pattern.
 
@@ -123,7 +120,7 @@ assert "$p2.first $p2.last" == 'Johnny Depp'
     instances of the enclosing class
 
     */
-class Person3{
+class Person3 {
     String first
     String last
     Integer born
