@@ -48,9 +48,9 @@ class LoggingASTTransformation implements ASTTransformation {
     }
 
     private static injectError(SourceUnit sourceUnit, ASTNode astNode, String message){
-        final SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber());
-        final SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit);
-        sourceUnit.getErrorCollector().addError(syntaxErrorMessage, true);
+        final SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber())
+        final SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit)
+        sourceUnit.getErrorCollector().addError(syntaxErrorMessage, true)
     }
 
     private static ExpressionStatement createPrintlnStatement(String message) {
