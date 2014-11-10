@@ -1,4 +1,4 @@
-package groovyInAction.Ch9_CompileTimeMetaprogramming_ASTTransformations.local_AST_transformation_example
+package groovyInAction.Ch9_CompileTimeMetaprogramming_ASTTransformations.local_AST_transformation_example.main_method_generator.ast
 
 import org.codehaus.groovy.transform.GroovyASTTransformationClass
 
@@ -14,4 +14,4 @@ import java.lang.annotation.Target
 @Retention(RetentionPolicy.SOURCE)                                    // Do not persist this annotation through to the final class file
 @Target([ElementType.METHOD])                                         // Only allow this annotation on methods
 @GroovyASTTransformationClass(classes = [MainMethodTransformation])   // Point this annotation to the correct transformation
-public @interface Main {}
+public @interface MainMethod {}

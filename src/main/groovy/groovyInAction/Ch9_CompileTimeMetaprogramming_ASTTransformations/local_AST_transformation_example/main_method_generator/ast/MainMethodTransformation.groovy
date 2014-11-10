@@ -1,4 +1,4 @@
-package groovyInAction.Ch9_CompileTimeMetaprogramming_ASTTransformations.local_AST_transformation_example
+package groovyInAction.Ch9_CompileTimeMetaprogramming_ASTTransformations.local_AST_transformation_example.main_method_generator.ast
 
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassNode
@@ -47,6 +47,7 @@ public class MainMethodTransformation implements ASTTransformation {
         String methodName = source.name
 
         CompilePhase compilePhase = CompilePhase.INSTRUCTION_SELECTION
+
         List<ASTNode> nodes = new AstBuilder().buildFromString(compilePhase, """\
             package $source.declaringClass.packageName
 
@@ -56,7 +57,6 @@ public class MainMethodTransformation implements ASTTransformation {
                 }
             }
         """)
-
 
         /**
          * //TODO: Finish clarifying these comments

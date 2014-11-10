@@ -8,7 +8,7 @@ repositories {
 dependencies {
     runtime "commons-cli:commons-cli:1.2"
 
-    compile 'org.codehaus.groovy:groovy:2.3.7'
+    compile 'org.codehaus.groovy:groovy-all:2.3.7'
     compile 'org.codehaus.groovy:groovy-test:2.3.7'
 
     compile "org.codehaus.gpars:gpars:1.2.1"
@@ -18,5 +18,12 @@ configurations.all {
     resolutionStrategy {
         failOnVersionConflict()
         cacheChangingModulesFor(0, 'seconds')
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
     }
 }
