@@ -8,6 +8,6 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 @Retention(RetentionPolicy.SOURCE)      // Only persist through the SOURCE (i.e. discard at compiler phase)
-@Target([ElementType.METHOD, ElementType.TYPE])
+@Target([ElementType.METHOD])
 @GroovyASTTransformationClass(classes = [LoggingASTTransformation])
 public @interface WithLogging {}
