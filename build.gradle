@@ -8,9 +8,14 @@ repositories {
 dependencies {
     runtime "commons-cli:commons-cli:1.2"
 
+    // Benchmarking
+    compile 'com.googlecode.gbench:gbench:0.4.2-groovy-2.1'
+
+    // Groovy
     compile 'org.codehaus.groovy:groovy-all:2.3.7'
     compile 'org.codehaus.groovy:groovy-test:2.3.7'
 
+    // Multi-threading
     compile "org.codehaus.gpars:gpars:1.2.1"
 }
 
