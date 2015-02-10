@@ -7,7 +7,7 @@ package groovyInAction.Ch8_DynamicProgramming
  * code without paying as much of a performance price for it.
  *
  * The paradigm is simple:
- *      When an method is called that does not exist on an object:
+ *      When a method is called that does not exist on an object:
  *          1.) Create the desired method
  *          2.) Add the method to the object (so it will be available in the future)
  *          3.) Invoke the method
