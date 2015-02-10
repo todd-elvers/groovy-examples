@@ -36,7 +36,7 @@ Object data = [
         [name: 'neptune',   au: 30]
 ]
 
-assert data.findByName('moon')      // Non-cached
+assert data.findByName('moon')      // Not-cached
 assert data.findByName('sun')       // Cached
-assert data.findByAu(1)             // Non-cached
+assert data.findByAu(1)             // Not-cached
 assert data.findByAu(30)            // Cached
