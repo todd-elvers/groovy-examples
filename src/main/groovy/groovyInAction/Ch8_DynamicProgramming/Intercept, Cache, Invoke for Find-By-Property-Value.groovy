@@ -1,5 +1,20 @@
 package groovyInAction.Ch8_DynamicProgramming
 
+/**
+ * Intercept, Cache & Invoke
+ *
+ * This is an efficient paradigm for adding dynamic functionality to your
+ * code without paying as much of a performance price for it.
+ *
+ * The paradigm is simple:
+ *      When an method is called that does not exist on an object:
+ *          1.) Create the desired method
+ *          2.) Add the method to the object (so it will be available in the future)
+ *          3.) Invoke the method
+ */
+
+
+// Intercept the call to a method that does not exist on 'Object'
 Object.metaClass.methodMissing = { String name, Object args ->
     assert name.startsWith('findBy')
     assert args.size() == 1
@@ -7,14 +22,15 @@ Object.metaClass.methodMissing = { String name, Object args ->
     // Cache method for future calls
     println("[MetaClass] Caching method '${name}' for future calls.")
     Object.metaClass."$name" = { value ->
-        delegate.find { it[name.toLowerCase()-'findby'] == value }
+        String propertyName = name.toLowerCase()-'findby'
+        delegate.find { it[propertyName] == value }
     }
 
     // Invoke the method
     delegate."$name"(args[0])
 }
 
-def data = [
+Object data = [
         [name: 'moon',      au: '0.0025'],
         [name: 'sun',       au: 1],
         [name: 'neptune',   au: 30]

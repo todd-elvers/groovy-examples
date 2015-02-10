@@ -7,22 +7,21 @@ import groovy.time.TimeCategory
 MetaClass mc = String.metaClass
 final Object[] NO_ARGS = []
 
-assert     1 == mc.respondsTo("toString", NO_ARGS).size()
-assert     3 == mc.properties.size()
-assert    74 == mc.methods.size()
-assert   252 == mc.metaMethods.size()
-assert    '' == mc.invokeMethod('', 'toString', NO_ARGS)
-assert  null == mc.invokeStaticMethod(String, "println", NO_ARGS)
-assert    '' == mc.invokeConstructor(NO_ARGS)
+println "How many methods of String.toString() accept no arguments? - ${mc.respondsTo("toString", NO_ARGS).size()}"
+println "How many properties are on String? - ${mc.properties.size()}"
+println "How many methods are on String? - ${mc.methods.size()}"
+println "How many meta-methods are on String? - ${mc.metaMethods.size()}"
+println "What is the result of invoking the no-arg .toString() method on 'a'? - ${mc.invokeMethod('a', 'toString', NO_ARGS)}"
+println "What is the result of invoking the static .valueOf() method on the String class w/ args 123? - ${mc.invokeStaticMethod(String, "valueOf", 123)}"
+println "What is the result of invoking the no-arg String constructor? - \"${mc.invokeConstructor(NO_ARGS)}\""
+
 
 
 /*
-     Kinds of MetaClasses 
-     
-     - MetaClassImpl: the default meta class, used in the vast majority of cases
-     - ExpandoMetaClass: used to expand state and behavior
-     - ProxyMetaClass: used to decorate a meta class with interception capabilities
-     - Others used internally and for testing
+     Main Implementations of MetaClass 
+        - MetaClassImpl   : the default meta class, used in the vast majority of cases
+        - ExpandoMetaClass: used to expand state and behavior
+        - ProxyMetaClass  : used to decorate a meta class with interception capabilities
  
 */
 
@@ -30,56 +29,70 @@ assert    '' == mc.invokeConstructor(NO_ARGS)
 /*** ProxyMetaClass ***/
 /**********************/
 class InspectMe {
-    int outer() {
-        return inner()
+    int outerMethod() {
+        return innerMethod()
     }
-    private int inner() {
+    private int innerMethod() {
         return 1
     }
 }
 
+// Create an instance of ProxyMetaClass w/ a TracingInterceptor
 def tracer = new TracingInterceptor(writer: new StringWriter())
 def proxyMetaClass = ProxyMetaClass.getInstance(InspectMe)
 proxyMetaClass.interceptor = tracer
 
+// Inject ProxyMetaClass into InspectMe
 InspectMe inspectMe = new InspectMe(metaClass: proxyMetaClass)
+// Call to instance of InspectMe still functions normally
+assert inspectMe.outerMethod() == 1
 
-assert inspectMe.outer() == 1
-println("Method trace: \n${tracer.writer.toString()}")
-assert tracer.writer.toString() == """\
-before groovyInAction.Ch8_DynamicProgramming.InspectMe.outer()
-  before groovyInAction.Ch8_DynamicProgramming.InspectMe.inner()
-  after  groovyInAction.Ch8_DynamicProgramming.InspectMe.inner()
-after  groovyInAction.Ch8_DynamicProgramming.InspectMe.outer()
+
+// Retrieve the method trace from the ProcyMetaClass (we remove the package name here to clarify the output)
+String methodTrace = tracer.writer.toString().replaceAll("groovyInAction.Ch8_DynamicProgramming.", "")
+
+assert methodTrace == """\
+before InspectMe.outerMethod()
+  before InspectMe.innerMethod()
+  after  InspectMe.innerMethod()
+after  InspectMe.outerMethod()
 """
 
 /* Alternate invocation style */
 proxyMetaClass.use(inspectMe) {
-    inspectMe.outer()    // proxy in use
+    inspectMe.outerMethod()    // proxy in use
 }
 // proxy no longer in use
+
+
+
 
 
 
 /*************************/
 /*** MetaClass Builder ***/
 /*************************/
-def move(string, distance) {
-    string.collect {
-        (it as char) + distance as char
+String shiftCipher(String string, int numCharactersToShiftBy) {
+    // Iterate over the characters of 'string' and shift their characters by 'numCharactersToShiftBy'
+    string.collect { theChar ->
+        (theChar as char) + numCharactersToShiftBy as char
     }.join('')
 }
 
-String ibm = "IBM"
-ibm.metaClass {
-    shift = -1
-    encode {-> move(delegate, shift) }
-    decode {-> move(delegate, -shift) }
-    getCode {-> encode()}
-    getOrig {-> decode()}
+String.metaClass {
+    encode { numCharactersToShiftBy ->
+        shiftCipher(delegate, numCharactersToShiftBy)
+    }
+    decode { numCharactersToShiftBy ->
+        shiftCipher(delegate, -numCharactersToShiftBy)
+    }
 }
 
-assert ibm.encode() == "HAL"
+assert "ABC".encode(1) == "BCD"
+assert "ABC".encode(1).decode(1) == "ABC"
+
+
+
 
 
 
@@ -89,12 +102,18 @@ assert ibm.encode() == "HAL"
 class MySuperGroovy {}
 class MySubGroovy extends MySuperGroovy {}
 
+// Modifying the super class's metaClass also adds that function to any subclasses
 MySuperGroovy.metaClass.added = {-> true}
 assert new MySubGroovy().added()
 
 // Modifying an interface or it's MetaClass and having all implementing
 // classes share that behavior is the same as above, but requires calling:
 // ExpandoMetaClass.enableGlobally()
+
+
+
+
+
 
 
 /**********************************************************/
@@ -135,7 +154,7 @@ assert people == '''
       - Meta class changes are best applied only once - preferably at application startup time
 
 
- * */
+ */
 
 
 
@@ -154,21 +173,14 @@ println("2 weeks from today: ${date}")
     Category class takeaways:
 
       - Classes not written in Groovy (e.g. Collections) can still be used as categories
-
       - Category usage is confined to the current thread
-
       - Category use is non-intrusive
-
       - If the receiver type refers to a superclass or even an interface, then the method
         will be available in all subclasses/implementors
-
       - Category methods names can take the form of property accessors (pretending
         property access), operator methods, and GroovyObject methods
-
       - In places where performance is crucial, use categories with care
-
       - Categories cannot introduce new state in the receiver object
-
       - If two or more Categories conflict on a method name, the latest Category wins
 
 

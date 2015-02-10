@@ -76,22 +76,30 @@ assert dynamicPretender.hello == 5
 /**************************/
 /*** getProperty() Hook ***/
 /**************************/
-class NoParens {
+class AllowNoArgMethodsToBeCalledWithoutParenthesis {
     def getProperty(String propertyName) {
+        // If there is a property with this name in the class, return it
         if(metaClass.hasProperty(this, propertyName)) {
             return metaClass.getProperty(this, propertyName)
         }
-        
+
+        // Otherwise try and invoke a method with that name and no arguments
         invokeMethod(propertyName, null)
     }
 }    
 
-class PropUser extends NoParens {
+class PropUser extends AllowNoArgMethodsToBeCalledWithoutParenthesis {
     boolean existingProperty = true
 }
 
 def user = new PropUser()
+
+// Calls to properties that exist function as expected
 assert user.existingProperty
+
+// Since .toString() is a no-arg method, and user.toString
+// is interpreted as user.getProperty('toString'), our
+// method above intercepts it and invokes it like a method.
 assert user.toString() == user.toString
 
 

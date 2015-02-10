@@ -37,51 +37,6 @@ assert new Dimension(2, 3)  == Dimension.make(2, 3)
 
 
 
-/**************************************************************************/
-/*** Temporarily faking property assignments for configuration purposes ***/
-/**************************************************************************/
-
-interface ChannelComponent {}
-class Producer implements ChannelComponent {
-    ArrayList<Integer> outChannel
-}
-
-class Adaptor implements ChannelComponent {
-    ArrayList<Integer> inChannel
-    ArrayList<String> outChannel
-}
-
-class Printer implements ChannelComponent {
-    ArrayList<String> inChannel
-}
-
-class WiringCategory {
-    static connections = []
-
-    static setInChannel(ChannelComponent self, value) {
-        connections << [target: self, source: value]
-    }
-
-    static getOutChannel(ChannelComponent self) {
-        self
-    }
-}
-
-Producer producer = new Producer()
-Adaptor adaptor = new Adaptor()
-Printer printer = new Printer()
-use WiringCategory, {
-    adaptor.inChannel = producer.outChannel
-    printer.inChannel = adaptor.outChannel
-}
-assert WiringCategory.connections == [
-        [source: producer, target: adaptor],
-        [source: adaptor, target: printer]
-]
-
-
-
-
 /************************************************************/
 /*** Method aliasing and undoing meta class modifications ***/
 /************************************************************/

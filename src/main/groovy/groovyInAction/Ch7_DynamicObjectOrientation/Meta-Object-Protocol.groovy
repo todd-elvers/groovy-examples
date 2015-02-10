@@ -1,4 +1,7 @@
 package groovyInAction.Ch7_DynamicObjectOrientation
+
+
+
 /**********************************/
 /*** Meta-Object-Protocol (MOP) ***/
 /**********************************/
@@ -30,6 +33,9 @@ interface GroovyObject {
  */
 
 
+
+
+
 // Every instance of a GroovyObject has an association with MetaClass.
 // Metaclass has the following methods:
 class MetaClass {
@@ -53,45 +59,62 @@ class MetaClassRegistry {
 
 
 
+
+
+
 /********************************************/
 /*** Groovy's MOP Method Invocation Logic ***/
 /********************************************/
 
-/* 
-    Given some class Cat, when you call cat.meow() the following happens:
-        1.) Groovy checks the MetaClass of the instance of Cat (ie the 'cat' object) for .meow()
-        2.) If no closure is found, Groovy then checks the class's MetaClass for .meow()
-        3.) If no closure is found, Groovy then checks the object for a .meow() method
-        4.) If no method is found, Groovy then checks the object for a .meow() closure
-        5.) If no closure is found, a MissingMethodException is thrown
-        
-*/
-class Cat {    
+/*
+    Let 'Cat' be a class and let 'cat' be an instantiation of that class.
+    Let a no-arg function called 'meow' exist as a method and a closure on Cat.
+    Let there also be a no-arg 'meow' closure on the metaClass of 'Cat' and of 'cat'.
 
+    Then calling 'cat.meow()' would cause Groovy to do the following:
+        1.) Check cat.metaClass for a compatible 'meow' closure
+        2.) If no closure is found, Groovy then checks Cat.metaClass for a compatible 'meow' closure
+        3.) If no closure is found, Groovy then checks cat for a compatible 'meow' method
+        4.) If no method is found, Groovy then checks cat for a compatible 'meow' closure
+        5.) If no closure is found, a MissingMethodException is thrown
+
+    Put more concisely, the order in which Groovy would check for compatible method/closure signatures:
+        1.) cat.metaClass.meow = {}
+        2.) Cat.metaClass.meow = {}
+        3.) cat.meow()
+        4.) cat.meow = {}
+        5.) MissingMethodException is thrown
+
+*/
+class Cat {
     // Method on object of Cat
-    void meow() {
-        println "Meow() called from instance of Cat"
+    String meow() {
+        "Call returned from: cat.meow()"
     }
-    
+
     // Closure on object of Cat
-    def meow = {
-        println "Meow() closure called from instance of Cat"
+    Closure<String> meow = {
+        "Call returned from: cat.meow = {}"
     }
-    
 }
 
-// Method on MetaClass of the class of Cat
-Cat.metaClass.meow = {
-    println "Meow() called from MetaClass of the class Cat"
-}   
+// Without messing with the metaClass, the method takes precedence
+// over the closure with the same arguments
+assert new Cat().meow() == "Call returned from: cat.meow()"
 
+// Adding a closure onto the MetaClass of the class of Cat means all instances
+// of 'Cat' that are instantiated after this call will have that method
+Cat.metaClass.meow = { "Call returned from Class's metaClass: Cat.metaClass.meow = {}" }
 
 Cat cat = new Cat()
+assert cat.meow() == "Call returned from Class's metaClass: Cat.metaClass.meow = {}"
 
-// Method on MetaClass of an instance of Cat
-cat.metaClass.meow = {
-    println "Meow() called from MetaClass of an instance of Cat"
-}
 
-cat.meow()
+// Adding a closure onto the MetaClass of an instance of Cat means
+// only that instance receives the method
+cat.metaClass.meow = { "Call returned from instance's metaClass: cat.metaClass.meow = {}" }
+assert cat.meow() == "Call returned from instance's metaClass: cat.metaClass.meow = {}"
+
+println cat.meow()
+
    
