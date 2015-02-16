@@ -10,6 +10,7 @@ dependencies {
 
     // Benchmarking
     compile 'com.googlecode.gbench:gbench:0.4.2-groovy-2.1'
+    compile 'com.google.guava:guava:18.0'
 
     // Groovy
     compile 'org.codehaus.groovy:groovy-all:2.4.0'
