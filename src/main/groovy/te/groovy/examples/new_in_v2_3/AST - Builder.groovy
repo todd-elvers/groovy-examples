@@ -64,12 +64,6 @@ import groovy.transform.builder.SimpleStrategy
 
 
 
-// All of the following examples work, but Intellij 13.1.3 reads @Builder and thinks all the listed
-// attributes MUST be specified and highlights it red (Severity: Error) otherwise.  Not only is this a
-// nuisance but some of the ways to configure @Builder don't allow you to set all attributes.
-// Essentially the IDE will complain to you, but the code works fine.
-
-
 
 /*
     SimpleStrategy
@@ -91,7 +85,9 @@ class Person1 {
 def p1 = new Person1().setFirst('Johnny')
                       .setLast('Depp')
                       .setBorn(1963)
+
 assert "$p1.first $p1.last" == 'Johnny Depp'
+
 
 
 // One can optionally set the prefix (default = 'set')
@@ -105,7 +101,12 @@ class Person2 {
 def p2 = new Person2().first('Johnny')
                       .last('Depp')
                       .born(1963)
+
 assert "$p2.first $p2.last" == 'Johnny Depp'
+
+
+
+
 
 
 
@@ -133,7 +134,12 @@ def p3 = new PersonBuilder().first('Johnny')
                             .last('Depp')
                             .born(1963)
                             .build()
+
 assert "$p3.first $p3.last" == 'Johnny Depp'
+
+
+
+
 
 
 
@@ -163,6 +169,9 @@ assert "$p4.firstName $p4.lastName".toString() ==  "Johnny Depp"
 
 
 
+
+
+
 // Even more customization is possible:
 @Builder(buildMethodName='make', builderMethodName='maker', prefix='with', excludes='age')
 class Person5 {
@@ -176,6 +185,7 @@ def p5 = Person5.maker()
                 .withLastName("Depp")
                 .withYearOfBirth(1963)
                 .make()
+
 assert "$p5.firstName $p5.lastName" == "Johnny Depp"
 
 

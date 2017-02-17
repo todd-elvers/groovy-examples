@@ -13,7 +13,7 @@ import groovy.transform.Immutable
 // Typically, one class will contain a reference to another class
 // and then also share some of the API with that class.
 
-class NoisySet implements Set {
+class NoisySet {
     @Delegate
     Set delegate = new HashSet()
 

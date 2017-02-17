@@ -10,7 +10,7 @@ import static java.sql.DriverManager.getConnection
 /*** ToString ***/
 /****************/
 // Automatically generates the .toString() method
-@ToString(includePackage = false)
+@ToString(includePackage = false, includeNames = true)
 class Person {
     String first, last
 }
@@ -48,34 +48,25 @@ assert p1 == p2
 /*************************/
 // Adds all possible constructors
 @TupleConstructor
+@ToString(includePackage = false)
 class Person2 {
-    String first, last
+    String first
+    String last
 }
 p1 = new Person2('John', 'Doe')
 p2 = new Person2('John')
 
 [p1, p2].each {
-//    println("$it.first $it.last")
+    println("$it")
 }
 
+// NOTE: This will not do anything if a constructor is already present, unless you specify 'force=true'
 
 
 
 
-/*****************/
-/*** Canonical ***/
-/*****************/
-// Adds the following annotations: @ToString, @EqualsAndHashCode, @TupleConstructor
-@Canonical
-class Person3 {
-    String first, last
-}
 
-p1 = new Person3('John', 'Doe')
-p2 = new Person3('John')
 
-assert p1.first == p2.first
-assert p1.toString().split('\\.')[-1] == 'Person3(John, Doe)'
 
 
 
@@ -93,10 +84,13 @@ class Person4 {
 
 
 assert new Person4()
-// NOTE: By default this is NOT thread-safe. To make this thread-safe, add the 'transient' keyword.
-// The 'transient' keyword normally marks a field as not serializable, but @Lazy
-// makes it act differently by instead initializing the field from within a
-// synchronized double-checked lock block.
+
+/*
+    NOTE: By default this is NOT thread-safe. To make this thread-safe, add the 'transient' keyword.
+    The 'transient' keyword normally marks a field as not serializable, but @Lazy
+    makes it act differently by instead initializing the field from within a
+    synchronized double-checked lock block.
+ */
 
 
 
@@ -106,6 +100,26 @@ assert new Person4()
 /***************************/
 // Generates matching constructors for every super class constructor
 @InheritConstructors
-class MyCustomException extends Exception { }
+class MyCustomException extends Exception {
+
+}
 
 assert new MyCustomException("Custom Exception").message == "Custom Exception"
+
+
+
+
+/*****************/
+/*** Canonical ***/
+/*****************/
+// Adds the following annotations: @ToString, @EqualsAndHashCode, @TupleConstructor
+@Canonical
+class Person3 {
+    String first, last
+}
+
+p1 = new Person3('John', 'Doe')
+p2 = new Person3('John')
+
+assert p1.first == p2.first
+assert p1.toString().split('\\.').last() == 'Person3(John, Doe)'
