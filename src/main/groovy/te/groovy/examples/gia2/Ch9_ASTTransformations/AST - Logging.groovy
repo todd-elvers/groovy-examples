@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory
 
 */
 
+@SuppressWarnings("GrMethodMayBeStatic")
 public class JavaLoggingExample {
     private static final Logger log = LoggerFactory.getLogger(JavaLoggingExample);
 
@@ -36,13 +37,14 @@ public class JavaLoggingExample {
 
 
 @Slf4j
+@SuppressWarnings("GrMethodMayBeStatic")
 class GroovyLogging {
 
-    def blowUp() {
+    void blowUp() {
         log.debug("This is not wasteful if we're not on DEBUG level.")
     }
 
-    def blowUpAfterAST() {
+    void blowUpAfterAST() {
         if(log.isDebugEnabled()) {
             log.debug("${42/0}")
         }

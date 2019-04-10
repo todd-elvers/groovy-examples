@@ -76,33 +76,34 @@ import groovy.transform.builder.SimpleStrategy
         }
 */
 @Builder(builderStrategy = SimpleStrategy)
-class Person1 {
+class SimplePerson {
     String first
     String last
     Integer born
 }
 
-def p1 = new Person1().setFirst('Johnny')
-                      .setLast('Depp')
-                      .setBorn(1963)
+def simple = new SimplePerson()
+        .setFirst('Johnny')
+        .setLast('Depp')
+        .setBorn(1963)
 
-assert "$p1.first $p1.last" == 'Johnny Depp'
+assert "$simple.first $simple.last" == 'Johnny Depp'
 
 
 
 // One can optionally set the prefix (default = 'set')
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
-class Person2 {
+class PrefixPerson {
     String first
     String last
     Integer born
 }
 
-def p2 = new Person2().first('Johnny')
+def prefix = new PrefixPerson().first('Johnny')
                       .last('Depp')
                       .born(1963)
 
-assert "$p2.first $p2.last" == 'Johnny Depp'
+assert "$prefix.first $prefix.last" == 'Johnny Depp'
 
 
 
@@ -121,21 +122,21 @@ assert "$p2.first $p2.last" == 'Johnny Depp'
     instances of the enclosing class
 
 */
-class Person3 {
+class Person {
     String first
     String last
     Integer born
 }
 
-@Builder(builderStrategy=ExternalStrategy, forClass=Person3)
+@Builder(builderStrategy=ExternalStrategy, forClass=Person)
 class PersonBuilder { }
 
-def p3 = new PersonBuilder().first('Johnny')
+def person = new PersonBuilder().first('Johnny')
                             .last('Depp')
                             .born(1963)
                             .build()
 
-assert "$p3.first $p3.last" == 'Johnny Depp'
+assert "$person.first $person.last" == 'Johnny Depp'
 
 
 
@@ -152,19 +153,17 @@ assert "$p3.first $p3.last" == 'Johnny Depp'
     is injected into that class (default name is 'builder') and that inner static class does all the building
 */
 @Builder
-class Person4 {
-    String firstName
-    String lastName
-    Integer born
+class Sandwich {
+    String bread
+    String meat
 }
 
-def p4 = Person4.builder()
-                .firstName("Johnny")
-                .lastName("Depp")
-                .born(1963)
+def sandwich = Sandwich.builder()
+                .bread("Rye")
+                .meat("Turkey")
                 .build()
 
-assert "$p4.firstName $p4.lastName".toString() ==  "Johnny Depp"
+assert "$sandwich.meat on $sandwich.bread".toString() ==  "Turkey on Rye"
 
 
 
@@ -174,19 +173,17 @@ assert "$p4.firstName $p4.lastName".toString() ==  "Johnny Depp"
 
 // Even more customization is possible:
 @Builder(buildMethodName='make', builderMethodName='maker', prefix='with', excludes='age')
-class Person5 {
-    String firstName
-    String lastName
-    int yearOfBirth
+class Food {
+    String name
+    int calories
 }
 
-def p5 = Person5.maker()
-                .withFirstName("Johnny")
-                .withLastName("Depp")
-                .withYearOfBirth(1963)
+def food = Food.maker()
+                .withName("Butter")
+                .withCalories(1963)
                 .make()
 
-assert "$p5.firstName $p5.lastName" == "Johnny Depp"
+assert "$food.name $food.calories" == "Butter 1963"
 
 
 
@@ -203,16 +200,16 @@ assert "$p5.firstName $p5.lastName" == "Johnny Depp"
 */
 
 @Builder(builderStrategy=InitializerStrategy)
-class Person6 {
-    String firstName
-    String lastName
-    int yearOfBirth
+class Pasta {
+    String noodle
+    String name
+    int calories
 }
 
-def p6 = new Person6(
-            Person6.createInitializer()
-                   .firstName('Johnny')
-                   .lastName('Depp')
-                   .yearOfBirth(1963)
+def pasta = new Pasta(
+        Pasta.createInitializer()
+                   .noodle('Angel Hair')
+                   .name('Spaghetti')
+                   .calories(2_000)
 )
-assert "$p6.firstName $p6.lastName" ==  'Johnny Depp'
+assert "$pasta.noodle $pasta.name ($pasta.calories)" ==  'Angel Hair Spaghetti (2000)'

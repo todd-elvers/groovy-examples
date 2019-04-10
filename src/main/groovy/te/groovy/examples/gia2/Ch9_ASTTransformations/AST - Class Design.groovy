@@ -81,17 +81,17 @@ catch (RuntimeException ignored) {
 // Generates a map based constructor, a tuple constructor, and a getter for each property
 // Adds @ToString and @EqualsAndHashCode
 @Immutable
-class Person5 {
-    String firstName, lastName
+class Address {
+    String street, city
 }
 
-def person = new Person5('Hamlet', "D'Arcy")
+def address = new Address('2300 Bennett Springs', "Columbia")
 
 
-assert person.firstName == 'Hamlet'
+assert address.street == '2300 Bennett Springs'
 
 try {
-    person.firstName = 'John'
+    address.street = 'Somewhere Else'
 } catch (ReadOnlyPropertyException e) {
     // ...
 }

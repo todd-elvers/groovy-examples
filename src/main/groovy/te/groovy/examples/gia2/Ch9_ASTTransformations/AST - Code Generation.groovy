@@ -11,11 +11,11 @@ import static java.sql.DriverManager.getConnection
 /****************/
 // Automatically generates the .toString() method
 @ToString(includePackage = false, includeNames = true)
-class Person {
+class PersonWithToString {
     String first, last
 }
 
-def p = new Person(first:'John', last:'Doe')
+def p = new PersonWithToString(first:'John', last:'Doe')
 
 println p.toString()
 
@@ -29,12 +29,12 @@ println p.toString()
 /***************************/
 // Automatically generates the .equals() and .hashCode() methods
 @EqualsAndHashCode
-class Person1 {
+class PersonWithEqualsAndHashCode {
     String first, last
 }
 
-def p1 = new Person1(first:'John', last: 'Doe')
-def p2 = new Person1(first:'John', last: 'Doe')
+def p1 = new PersonWithEqualsAndHashCode(first:'John', last: 'Doe')
+def p2 = new PersonWithEqualsAndHashCode(first:'John', last: 'Doe')
 
 assert p1 == p2
 
@@ -49,14 +49,13 @@ assert p1 == p2
 // Adds all possible constructors
 @TupleConstructor
 @ToString(includePackage = false)
-class Person2 {
-    String first
-    String last
+class PersonWithTupleConstructor {
+    String first, last
 }
-p1 = new Person2('John', 'Doe')
-p2 = new Person2('John')
+def tuplePerson1 = new PersonWithTupleConstructor('John', 'Doe')
+def tuplePerson2 = new PersonWithTupleConstructor('John')
 
-[p1, p2].each {
+[tuplePerson1, tuplePerson2].each {
     println("$it")
 }
 
@@ -77,13 +76,13 @@ p2 = new Person2('John')
 /*** Lazy ***/
 /************/
 // @Lazy delays instantiation of an object until it is first referenced (aka lazy loading)
-class Person4 {
+class ConnectionWrapper {
     @Lazy
     def connection = getConnection('jdbc:odbc:dummy', 'sa', '')
 }
 
 
-assert new Person4()
+assert new ConnectionWrapper()
 
 /*
     NOTE: By default this is NOT thread-safe. To make this thread-safe, add the 'transient' keyword.
@@ -114,12 +113,13 @@ assert new MyCustomException("Custom Exception").message == "Custom Exception"
 /*****************/
 // Adds the following annotations: @ToString, @EqualsAndHashCode, @TupleConstructor
 @Canonical
-class Person3 {
-    String first, last
+class Pet {
+    String type, name
 }
 
-p1 = new Person3('John', 'Doe')
-p2 = new Person3('John')
+def cat = new Pet('Cat', 'Whiskers')
+def dog = new Pet('Dog')
 
-assert p1.first == p2.first
-assert p1.toString().split('\\.').last() == 'Person3(John, Doe)'
+assert cat.type == "Cat"
+assert dog.type == "Dog"
+assert cat.toString().split('\\.').last() == 'Pet(Cat, Whiskers)'

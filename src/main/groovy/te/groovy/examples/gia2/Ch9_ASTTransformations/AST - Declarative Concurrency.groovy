@@ -18,7 +18,7 @@ import static groovy.transform.AutoCloneStyle.SIMPLE
 // Synchronization is a low level, primitive operation.
 
 // @Synchronized wraps methods in synchronized blocks, without exposing it at the method-level
-class Person6 {
+class SynchronizedPhoneBook {
     private final phoneNumbers = [:]
 
     @Synchronized
@@ -36,7 +36,7 @@ class Person6 {
 // If you want to limit the scope of your synchronized block, then provide
 // a name for the lock using the default annotation parameter and write the
 // synchronized block yourself when needed:
-class Person7 {
+class SynchronizedPhoneBookWithLock {
     private final phoneNumbers = [:]
     private final lock = new Object[0]
 
@@ -58,7 +58,7 @@ class Person7 {
 /*** Read/write locks ***/
 /************************/
 
-class ConcurrentPhoneBook {
+class ReadWriteLockingPhoneBook {
     private final phoneNumbers = [:]
 
     @WithReadLock
@@ -74,7 +74,7 @@ class ConcurrentPhoneBook {
 
 // The above is equivalent to the below
 
-class ConcurrentPhoneBookEquivalent {
+class ReadWriteLockingPhoneBookEquivalent {
 
     private final ReadWriteLock $reentrantlock = new ReentrantReadWriteLock()
     private final phoneNumbers = [:]
@@ -106,24 +106,24 @@ class ConcurrentPhoneBookEquivalent {
 /*********************/
 
 @AutoClone(style = SIMPLE)
-class Person9 {
+class CloneablePerson {
     String firstName, lastName
     Date birthday
 }
 
 // Annotating a class with @AutoClone(style = SIMPLE) logically produces code similar to:
-class Person10 implements Cloneable {
+class CloneablePersonEquivalent implements Cloneable {
     String firstName, lastName
     Date birthday
 
-    protected Person10(Person10 other) throws CloneNotSupportedException {
+    protected ClonablePersonEquivalent(CloneablePersonEquivalent other) throws CloneNotSupportedException {
         firstName = other.firstName
         lastName = other.lastName
         birthday = (Date) other.birthday.clone()
     }
 
     Object clone() throws CloneNotSupportedException {
-        new Person10(this)
+        new CloneablePersonEquivalent(this)
     }
 }
 
@@ -135,7 +135,7 @@ class Person10 implements Cloneable {
 
 // Annotating a class with @AutoExternalize automatically generates .readExternal(ObjectInput)
 // and .writeExternal(ObjectOutput) similar to:
-class Person11 implements Externalizable {
+class ExternalizedPerson implements Externalizable {
     String firstName, lastName
     Date birthday
 
@@ -148,7 +148,7 @@ class Person11 implements Externalizable {
     public void readExternal(ObjectInput oin) {
         firstName = oin.readObject()
         lastName = oin.readObject()
-        birthday = oin.readObject()
+        birthday = oin.readObject() as Date
     }
 }
 
