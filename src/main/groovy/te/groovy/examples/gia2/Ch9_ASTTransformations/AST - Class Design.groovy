@@ -62,7 +62,7 @@ class Zeus {
     // ...
 }
 
-assert Zeus.instance
+assert Zeus.getInstance()
 
 try {
     new Zeus()
