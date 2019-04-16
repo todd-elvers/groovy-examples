@@ -31,7 +31,6 @@ def closure = mom.birth(4)
 def context = closure.call(this)
 
 assert context[0..3] == [1,2,3,4]
-assert context[-4].class.name.contains("(Ch 5) - Closures")
 assert context[-3] instanceof Mother
 assert context[-2] instanceof Mother
 assert context[-1] instanceof Mother 

@@ -49,7 +49,7 @@ assert inspectMe.outerMethod() == 1
 
 
 // Retrieve the method trace from the ProcyMetaClass (we remove the package name here to clarify the output)
-String methodTrace = tracer.writer.toString().replaceAll("groovyInAction.Ch8_DynamicProgramming.", "")
+String methodTrace = tracer.writer.toString().replaceAll("te.groovy.examples.gia2.Ch8_DynamicProgramming.", "")
 
 assert methodTrace == """\
 before InspectMe.outerMethod()

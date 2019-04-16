@@ -163,7 +163,7 @@ many.times {
 }
 def onlyMatching = System.currentTimeMillis() - start  
 
-assert timeImplicit > timePredef * 2
+assert creationAndMatching > onlyMatching * 2
 println "\nEFFICIENCY"
 println "\tPattern-creation + Pattern-matching inside loop = $creationAndMatching ms"
 println "\t\t    Only Pattern-matching inside loop = $onlyMatching ms"
