@@ -1,4 +1,4 @@
-package te.groovy.examples.new_in_v2_3
+package te.groovy.examples.new_version_features.v2_3
 
 /*
     Trait features:
